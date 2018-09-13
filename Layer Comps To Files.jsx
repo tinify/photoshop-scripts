@@ -15,10 +15,7 @@
 
 <javascriptresource>
 <name>$$$/JavaScripts/LayerCompsToFiles/Menu=Layer Comps to Files...</name>
-    <category>scriptexport</category>
-    <menu>export</menu>
-    
-    <enableinfo>PSHOP_DocHasLayerComps</enableinfo>
+    <category>layercomps</category>
 <eventid>cf34b502-2013-4d07-8431-1dfd634ee0cd</eventid>
 <terminology><![CDATA[<< /Version 1 
                          /Events << 
