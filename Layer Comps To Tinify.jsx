@@ -315,11 +315,11 @@ function settingDialog(exportInfo)
 
 	dlgMain.ddFileType.onChange = function() {
 		switch(this.selection.index) {
-			case jpegIndex:	
+			case jpegIndex:
 				dlgMain.pnlFileType.pnlOptions.text = strJPEGOptions;
 				break;
-			case png8Index:		
-			default:		
+			case png8Index:
+			default:
 				dlgMain.pnlFileType.pnlOptions.text = strPNG8Options;
 				break;
 		}
@@ -638,10 +638,6 @@ function descriptorToObject (o, d, s, f) {
 // Return: JavaScript Object with objects converted for storage
 ///////////////////////////////////////////////////////////////////////////////
 function preProcessExportInfo(o) {
-	o.tiffCompression = o.tiffCompression.toString();
-	o.pdfEncoding = o.pdfEncoding.toString();
-	o.targaDepth = o.targaDepth.toString();
-	o.bmpDepth = o.bmpDepth.toString();
 	return o;
 }
 
@@ -652,10 +648,6 @@ function preProcessExportInfo(o) {
 // Return: JavaScript Object with objects in enum form
 ///////////////////////////////////////////////////////////////////////////////
 function postProcessExportInfo(o) {
-	o.tiffCompression = eval(o.tiffCompression);
-	o.pdfEncoding = eval(o.pdfEncoding);
-	o.targaDepth = eval(o.targaDepth);
-	o.bmpDepth = eval(o.bmpDepth);
 	return o;
 }
 
