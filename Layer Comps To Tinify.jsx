@@ -764,211 +764,35 @@ function logToHeadLights(eventRecord)
 ///////////////////////////////////////////////////////////////////////////////
 function saveFile( docRef, fileNameBody, exportInfo)
 {
-    var isS4W = false,
-        fileExtension;
-	if ( true /* folderExists(exportInfo.destination)*/) {
-		switch (exportInfo.fileType) {
-			case jpegIndex:
-                fileExtension = "jpg";
-				docRef.bitsPerChannel = BitsPerChannelType.EIGHT;
-				var saveFile = new File(exportInfo.destination + "/" + fileNameBody + ".jpg");
-				jpgSaveOptions = new JPEGSaveOptions();
-				jpgSaveOptions.embedColorProfile = exportInfo.icc;
-				jpgSaveOptions.quality = exportInfo.jpegQuality;
-				docRef.saveAs(saveFile, jpgSaveOptions, true, Extension.LOWERCASE);
-				break;
-			case psdIndex:
-                fileExtension = "psd";
-				var saveFile = new File(exportInfo.destination + "/" + fileNameBody + ".psd");
-				psdSaveOptions = new PhotoshopSaveOptions();
-				psdSaveOptions.embedColorProfile = exportInfo.icc;
-				docRef.saveAs(saveFile, psdSaveOptions, true, Extension.LOWERCASE);
-				break;
-			case tiffIndex:
-                fileExtension = "tiff";
-				var saveFile = new File(exportInfo.destination + "/" + fileNameBody + ".tif");
-				tiffSaveOptions = new TiffSaveOptions();
-				tiffSaveOptions.embedColorProfile = exportInfo.icc;
-				tiffSaveOptions.imageCompression = exportInfo.tiffCompression;
-				if (TIFFEncoding.JPEG == exportInfo.tiffCompression)    tiffSaveOptions.jpegQuality = exportInfo.tiffJpegQuality;
-				docRef.saveAs(saveFile, tiffSaveOptions, true, Extension.LOWERCASE);
-				break;
-			case pdfIndex:
-                fileExtension = "pdf";
-				if (docRef.bitsPerChannel == BitsPerChannelType.THIRTYTWO)
-					docRef.bitsPerChannel = BitsPerChannelType.SIXTEEN;
-				var saveFile = new File(exportInfo.destination + "/" + fileNameBody + ".pdf");
-				pdfSaveOptions = new PDFSaveOptions();
-				pdfSaveOptions.embedColorProfile = exportInfo.icc;
-				pdfSaveOptions.encoding = exportInfo.pdfEncoding;
-				if (PDFEncoding.JPEG == exportInfo.pdfEncoding) pdfSaveOptions.jpegQuality = exportInfo.pdfJpegQuality;
-				docRef.saveAs(saveFile, pdfSaveOptions, true, Extension.LOWERCASE);
-				break;
-			case targaIndex:
-                fileExtension = "tga";
-				docRef.bitsPerChannel = BitsPerChannelType.EIGHT;
-				var saveFile = new File(exportInfo.destination + "/" + fileNameBody + ".tga");
-				targaSaveOptions = new TargaSaveOptions();
-				targaSaveOptions.resolution = exportInfo.targaDepth;
-				docRef.saveAs(saveFile, targaSaveOptions, true, Extension.LOWERCASE);
-				break;
-			case bmpIndex:
-                fileExtension = "bmp";
-				docRef.bitsPerChannel = BitsPerChannelType.EIGHT;
-				var saveFile = new File(exportInfo.destination + "/" + fileNameBody + ".bmp");
-				bmpSaveOptions = new BMPSaveOptions();
-				bmpSaveOptions.depth = exportInfo.bmpDepth;
-				docRef.saveAs(saveFile, bmpSaveOptions, true, Extension.LOWERCASE);
-				break;
-            case png8Index:
-                fileExtension "png8";
-                isS4W = true;
-				var id5 = charIDToTypeID( "Expr" );
-				var desc3 = new ActionDescriptor();
-				var id6 = charIDToTypeID( "Usng" );
-				var desc4 = new ActionDescriptor();
-				var id7 = charIDToTypeID( "Op  " );
-				var id8 = charIDToTypeID( "SWOp" );
-				var id9 = charIDToTypeID( "OpSa" );
-				desc4.putEnumerated( id7, id8, id9 );
-				var id10 = charIDToTypeID( "Fmt " );
-				var id11 = charIDToTypeID( "IRFm" );
-				var id12 = charIDToTypeID( "PNG8" );
-				desc4.putEnumerated( id10, id11, id12 );
-				var id13 = charIDToTypeID( "Intr" ); //Interlaced
-				desc4.putBoolean( id13, exportInfo.png8Interlaced );
-				var id14 = charIDToTypeID( "RedA" );
-				var id15 = charIDToTypeID( "IRRd" );
-				var id16 = charIDToTypeID( "Prcp" ); //Algorithm
-				desc4.putEnumerated( id14, id15, id16 );
-				var id17 = charIDToTypeID( "RChT" );
-				desc4.putBoolean( id17, false );
-				var id18 = charIDToTypeID( "RChV" );
-				desc4.putBoolean( id18, false );
-				var id19 = charIDToTypeID( "AuRd" );
-				desc4.putBoolean( id19, false );
-				var id20 = charIDToTypeID( "NCol" ); //NO. Of Colors
-				desc4.putInteger( id20, 256 );
-				var id21 = charIDToTypeID( "Dthr" ); //Dither
-				var id22 = charIDToTypeID( "IRDt" );
-				var id23 = charIDToTypeID( "Dfsn" ); //Dither type
-				desc4.putEnumerated( id21, id22, id23 );
-				var id24 = charIDToTypeID( "DthA" );
-				desc4.putInteger( id24, 100 );
-				var id25 = charIDToTypeID( "DChS" );
-				desc4.putInteger( id25, 0 );
-				var id26 = charIDToTypeID( "DCUI" );
-				desc4.putInteger( id26, 0 );
-				var id27 = charIDToTypeID( "DChT" );
-				desc4.putBoolean( id27, false );
-				var id28 = charIDToTypeID( "DChV" );
-				desc4.putBoolean( id28, false );
-				var id29 = charIDToTypeID( "WebS" );
-				desc4.putInteger( id29, 0 );
-				var id30 = charIDToTypeID( "TDth" ); //transparency dither
-				var id31 = charIDToTypeID( "IRDt" );
-				var id32 = charIDToTypeID( "None" );
-				desc4.putEnumerated( id30, id31, id32 );
-				var id33 = charIDToTypeID( "TDtA" );
-				desc4.putInteger( id33, 100 );
-				var id34 = charIDToTypeID( "Trns" ); //Transparency
-				desc4.putBoolean( id34, exportInfo.png8Transparency );
-				var id35 = charIDToTypeID( "Mtt " );
-				desc4.putBoolean( id35, true );		 //matte
-				var id36 = charIDToTypeID( "MttR" ); //matte color
-				desc4.putInteger( id36, 255 );
-				var id37 = charIDToTypeID( "MttG" );
-				desc4.putInteger( id37, 255 );
-				var id38 = charIDToTypeID( "MttB" );
-				desc4.putInteger( id38, 255 );
-				var id39 = charIDToTypeID( "SHTM" );
-				desc4.putBoolean( id39, false );
-				var id40 = charIDToTypeID( "SImg" );
-				desc4.putBoolean( id40, true );
-				var id41 = charIDToTypeID( "SSSO" );
-				desc4.putBoolean( id41, false );
-				var id42 = charIDToTypeID( "SSLt" );
-				var list1 = new ActionList();
-				desc4.putList( id42, list1 );
-				var id43 = charIDToTypeID( "DIDr" );
-				desc4.putBoolean( id43, false );
-				var id44 = charIDToTypeID( "In  " );
-				desc4.putPath( id44, new File( exportInfo.destination + "/" + fileNameBody + ".png") );
-				var id45 = stringIDToTypeID( "SaveForWeb" );
-                
-                  //update for ICC option
-                  var idUseICC = charIDToTypeID( "EICC" );
-                  desc4.putBoolean(idUseICC, exportInfo.icc);
-                                                      
-				desc3.putObject( id6, id45, desc4 );
-				executeAction( id5, desc3, DialogModes.NO );
-				break;
-            case png24Index:
-                fileExtension "png24";
-                if(exportInfo.png24Transparency) {
-                    fileExtension = "png32"
-                }
-                isS4W = true;
-				var id6 = charIDToTypeID( "Expr" );
-				var desc3 = new ActionDescriptor();
-				var id7 = charIDToTypeID( "Usng" );
-				var desc4 = new ActionDescriptor();
-				var id8 = charIDToTypeID( "Op  " );
-				var id9 = charIDToTypeID( "SWOp" );
-				var id10 = charIDToTypeID( "OpSa" );
-				desc4.putEnumerated( id8, id9, id10 );
-				var id11 = charIDToTypeID( "Fmt " );
-				var id12 = charIDToTypeID( "IRFm" );
-				var id13 = charIDToTypeID( "PN24" );
-				desc4.putEnumerated( id11, id12, id13 );
-				var id14 = charIDToTypeID( "Intr" );
-				desc4.putBoolean( id14, exportInfo.png24Interlaced );
-				var id15 = charIDToTypeID( "Trns" );
-				desc4.putBoolean( id15, exportInfo.png24Transparency );
-				var id16 = charIDToTypeID( "Mtt " );
-				desc4.putBoolean( id16, true );
-				var id17 = charIDToTypeID( "MttR" );
-				desc4.putInteger( id17, 255 );
-				var id18 = charIDToTypeID( "MttG" );
-				desc4.putInteger( id18, 255 );
-				var id19 = charIDToTypeID( "MttB" );
-				desc4.putInteger( id19, 255 );
-				var id20 = charIDToTypeID( "SHTM" );
-				desc4.putBoolean( id20, false );
-				var id21 = charIDToTypeID( "SImg" );
-				desc4.putBoolean( id21, true );
-				var id22 = charIDToTypeID( "SSSO" );
-				desc4.putBoolean( id22, false );
-				var id23 = charIDToTypeID( "SSLt" );
-				var list1 = new ActionList();
-				desc4.putList( id23, list1 );
-				var id24 = charIDToTypeID( "DIDr" );
-				desc4.putBoolean( id24, false );
-				var id25 = charIDToTypeID( "In  " );
-				desc4.putPath( id25, new File( exportInfo.destination + "/" + fileNameBody + ".png") );
-				var id26 = stringIDToTypeID( "SaveForWeb" );
-                                                      
-                  //update for ICC option
-                  var idUseICC = charIDToTypeID( "EICC" );
-                  desc4.putBoolean(idUseICC, exportInfo.icc);
-                                                      
-				desc3.putObject( id7, id26, desc4 );
-				executeAction( id6, desc3, DialogModes.NO );
-				break;
-			default:
-				if ( DialogModes.NO != app.playbackDisplayDialogs ) {
-					alert(strUnexpectedError);
-				}
-				break;
-		}
+	// Select the opened document
+	var document = docRef;
+
+	// Choose the scale percentage
+	var percentage = 100;
+	if (percentage === undefined || percentage < 10 || percentage > 100) {
+		percentage = 100;
 	}
-    if(isS4W) 
-    {
-        logToHeadLights("Save for web - Layer Comp Script");
-    } else {
-        logToHeadLights("Save As - Layer Comp Script");
-    }
-    logToHeadLights("Layer Comp To File " + fileExtension);
+
+	switch (exportInfo.fileType) {
+		case jpegIndex:
+			var type = charIDToTypeID("tyJP"); /* tyJP for JPEG, tyPN for PNG */
+			var saveFile = new File(exportInfo.destination + "/" + fileNameBody + ".jpg");
+		break;
+		case png8Index:
+			var type = charIDToTypeID("tyPN"); /* tyJP for JPEG, tyPN for PNG */
+			var saveFile = new File(exportInfo.destination + "/" + fileNameBody + ".png");
+		break;
+	}
+
+	// Export the document
+	var tinify = new ActionDescriptor();
+	tinify.putPath(charIDToTypeID("In  "), saveFile); /* Overwrite original! */
+	tinify.putUnitDouble(charIDToTypeID("Scl "), charIDToTypeID("#Prc"), percentage );
+
+	var compress = new ActionDescriptor();
+	compress.putObject(charIDToTypeID("Usng"), charIDToTypeID("tinY"), tinify);
+	executeAction(charIDToTypeID("Expr"), compress, DialogModes.NO);
+
 }
 
 
