@@ -19,6 +19,7 @@
 <name>$$$/JavaScripts/LayerCompsToTinify/Menu=Layer Comps To Tinify...</name>
     <category>layercomps</category>
 <eventid>05c43700-96e0-428d-8fef-ecb4d9b6f28f</eventid>
+<enableinfo>true</enableinfo>
 <terminology><![CDATA[<< /Version 1 
                          /Events << 
                           /05c43700-96e0-428d-8fef-ecb4d9b6f28f [($$$/JavaScripts/LayerCompsToTinify/Action=Layer Comps To Tinify) /noDirectParam <<
@@ -62,7 +63,6 @@ var strJPEGOptions = localize("$$$/JavaScripts/LayerCompsToTinify/JPEGOptions=JP
 var strLabelQuality = localize("$$$/JavaScripts/LayerCompsToTinify/Quality=Quality:");
 var strPSDOptions = localize("$$$/JavaScripts/LayerCompsToTinify/PSDOptions=PSD Options:");
 var strCheckboxMaximizeCompatibility = localize("$$$/JavaScripts/LayerCompsToTinify/Maximize=&Maximize Compatibility");
-var strTIFFOptions = localize("$$$/JavaScripts/LayerCompsToTinify/TIFFOptions=TIFF Options:");
 var strLabelImageCompression = localize("$$$/JavaScripts/LayerCompsToTinify/ImageCompression=Image Compression:");
 var strNone = localize("$$$/JavaScripts/LayerCompsToTinify/None=None");
 var strPDFOptions = localize("$$$/JavaScripts/LayerCompsToTinify/PDFOptions=PDF Options:");
@@ -95,14 +95,8 @@ var strCheckboxPNGInterlaced = localize("$$$/JavaScripts/ExportLayersToFiles/Int
 var strPNG24Options = localize("$$$/JavaScripts/ExportLayersToFiles/PNG24Options=PNG-24 Options:");
 
 // the drop down list indexes for file type
-var bmpIndex = 0; 
-var jpegIndex = 1;
-var pdfIndex = 2;
-var psdIndex = 3;
-var targaIndex = 4;
-var tiffIndex = 5;
-var png8Index = 6; 
-var png24Index = 7;
+var jpegIndex = 0;
+var png8Index = 1; 
 
 // the drop down list indexes for tiff compression
 var compNoneIndex = 0;
@@ -191,7 +185,7 @@ function main() {
     
             var rememberMaximize;
             var needMaximize = exportInfo.psdMaxComp ? QueryStateType.ALWAYS : QueryStateType.NEVER;
-            if ( exportInfo.fileType == psdIndex && app.preferences.maximizeCompatibility != needMaximize ) {
+            if ( exportInfo.fileType == jpegIndex && app.preferences.maximizeCompatibility != needMaximize ) {
                 rememberMaximize = app.preferences.maximizeCompatibility;
                 app.preferences.maximizeCompatibility = needMaximize;
             }
@@ -328,59 +322,24 @@ function settingDialog(exportInfo)
     dlgMain.ddFileType.preferredSize.width = StrToIntWithDefault( strddFileType, 100 );
     dlgMain.ddFileType.alignment = 'left';
 
-    dlgMain.ddFileType.add("item", "BMP");
     dlgMain.ddFileType.add("item", "JPEG");
-    dlgMain.ddFileType.add("item", "PDF");
-	dlgMain.ddFileType.add("item", "PSD");
-    dlgMain.ddFileType.add("item", "Targa");
-    dlgMain.ddFileType.add("item", "TIFF");
     dlgMain.ddFileType.add("item", "PNG-8");
-    dlgMain.ddFileType.add("item", "PNG-24");
 
 	dlgMain.ddFileType.onChange = function() {
 		hideAllFileTypePanel(dlgMain);
 		switch(this.selection.index) {
-			case bmpIndex:	
-				dlgMain.pnlFileType.pnlOptions.text = strBMPOptions;
-				dlgMain.pnlFileType.pnlOptions.grpBMPOptions.show();	
-				break;
 			case jpegIndex:	
 				dlgMain.pnlFileType.pnlOptions.text = strJPEGOptions;
 				dlgMain.pnlFileType.pnlOptions.grpJPEGOptions.show();	
 				break;
-			case tiffIndex:	
-				dlgMain.pnlFileType.pnlOptions.text = strTIFFOptions;
-				dlgMain.pnlFileType.pnlOptions.grpTIFFOptions.show();	
-				break;
-			case pdfIndex:	
-				dlgMain.pnlFileType.pnlOptions.text = strPDFOptions;
-				dlgMain.pnlFileType.pnlOptions.grpPDFOptions.show();	
-				break;
-			case targaIndex:
-				dlgMain.pnlFileType.pnlOptions.text = strTargaOptions;
-				dlgMain.pnlFileType.pnlOptions.grpTargaOptions.show();	
-				break;
 			case png8Index:		
+			default:		
 				dlgMain.pnlFileType.pnlOptions.text = strPNG8Options;
 				dlgMain.pnlFileType.pnlOptions.grpPNG8Options.show();	
-				break;
-			case png24Index:		
-				dlgMain.pnlFileType.pnlOptions.text = strPNG24Options;
-				dlgMain.pnlFileType.pnlOptions.grpPNG24Options.show();	
-				break;
-			case psdIndex:	
-			default:		
-				dlgMain.pnlFileType.pnlOptions.text = strPSDOptions;
-				dlgMain.pnlFileType.pnlOptions.grpPSDOptions.show();	
 				break;
 		}
 	}
 	    
-
-	// -- now after all the radio buttons
-    dlgMain.cbIcc = dlgMain.pnlFileType.add("checkbox", undefined, strCheckboxIncludeICCProfile);
-    dlgMain.cbIcc.value = exportInfo.icc;
-    dlgMain.cbIcc.alignment = 'left';
 
 	// -- now the options panel that changes
     dlgMain.pnlFileType.pnlOptions = dlgMain.pnlFileType.add("panel", undefined, "Options");
@@ -388,12 +347,6 @@ function settingDialog(exportInfo)
     dlgMain.pnlFileType.pnlOptions.orientation = 'stack';
     dlgMain.pnlFileType.pnlOptions.preferredSize.height = StrToIntWithDefault( strpnlOptions, 100 );
 
-	// PSD options
-    dlgMain.pnlFileType.pnlOptions.grpPSDOptions = dlgMain.pnlFileType.pnlOptions.add("group");
-    dlgMain.pnlFileType.pnlOptions.grpPSDOptions.cbMax = dlgMain.pnlFileType.pnlOptions.grpPSDOptions.add("checkbox", undefined, strCheckboxMaximizeCompatibility);
-    dlgMain.pnlFileType.pnlOptions.grpPSDOptions.cbMax.value = exportInfo.psdMaxComp;
-	dlgMain.pnlFileType.pnlOptions.grpPSDOptions.visible = (exportInfo.fileType == psdIndex);
-	
     // PNG8 options
     dlgMain.pnlFileType.pnlOptions.grpPNG8Options = dlgMain.pnlFileType.pnlOptions.add("group");
     dlgMain.pnlFileType.pnlOptions.grpPNG8Options.png8Trans = dlgMain.pnlFileType.pnlOptions.grpPNG8Options.add("checkbox", undefined, strCheckboxPNGTransparency.toString());
@@ -401,14 +354,6 @@ function settingDialog(exportInfo)
     dlgMain.pnlFileType.pnlOptions.grpPNG8Options.png8Trans.value = exportInfo.png8Transparency;
     dlgMain.pnlFileType.pnlOptions.grpPNG8Options.png8Inter.value = exportInfo.png8Interlaced;
     dlgMain.pnlFileType.pnlOptions.grpPNG8Options.visible = (exportInfo.fileType == png8Index);
-    
-    // PNG24 options
-    dlgMain.pnlFileType.pnlOptions.grpPNG24Options = dlgMain.pnlFileType.pnlOptions.add("group");
-    dlgMain.pnlFileType.pnlOptions.grpPNG24Options.png24Trans = dlgMain.pnlFileType.pnlOptions.grpPNG24Options.add("checkbox", undefined, strCheckboxPNGTransparency.toString());
-    dlgMain.pnlFileType.pnlOptions.grpPNG24Options.png24Inter = dlgMain.pnlFileType.pnlOptions.grpPNG24Options.add("checkbox", undefined, strCheckboxPNGInterlaced.toString());
-    dlgMain.pnlFileType.pnlOptions.grpPNG24Options.png24Trans.value = exportInfo.png24Transparency;
-    dlgMain.pnlFileType.pnlOptions.grpPNG24Options.png24Inter.value = exportInfo.png24Interlaced;
-    dlgMain.pnlFileType.pnlOptions.grpPNG24Options.visible = (exportInfo.fileType == png24Index);
     
 	// JPEG options
     dlgMain.pnlFileType.pnlOptions.grpJPEGOptions = dlgMain.pnlFileType.pnlOptions.add("group");
@@ -421,148 +366,6 @@ function settingDialog(exportInfo)
     dlgMain.pnlFileType.pnlOptions.grpJPEGOptions.slQuality.onChanging = (function(field) { return function () { this.value = field.text = Math.round(this.value); }; })(dlgMain.pnlFileType.pnlOptions.grpJPEGOptions.etQuality);
     dlgMain.pnlFileType.pnlOptions.grpJPEGOptions.slQuality.onChange = dlgMain.pnlFileType.pnlOptions.grpJPEGOptions.slQuality.onChanging;
     dlgMain.pnlFileType.pnlOptions.grpJPEGOptions.visible = (exportInfo.fileType == jpegIndex);
-
-	// TIFF options
-    dlgMain.pnlFileType.pnlOptions.grpTIFFOptions = dlgMain.pnlFileType.pnlOptions.add("group");
-    dlgMain.pnlFileType.pnlOptions.grpTIFFOptions.orientation = 'column';
-    dlgMain.pnlFileType.pnlOptions.grpTIFFOptions.visible = (exportInfo.fileType == tiffIndex);
-    
-    dlgMain.pnlFileType.pnlOptions.grpTIFFOptions.grpCompression = dlgMain.pnlFileType.pnlOptions.grpTIFFOptions.add("group");
-    dlgMain.pnlFileType.pnlOptions.grpTIFFOptions.grpCompression.alignment = 'left';
-    dlgMain.pnlFileType.pnlOptions.grpTIFFOptions.grpCompression.add("statictext", undefined, strLabelImageCompression);
-    
-
-    dlgMain.pnlFileType.pnlOptions.grpTIFFOptions.grpCompression.ddCompression = dlgMain.pnlFileType.pnlOptions.grpTIFFOptions.grpCompression.add("dropdownlist");
-    dlgMain.pnlFileType.pnlOptions.grpTIFFOptions.grpCompression.ddCompression.add("item", strNone);
-    dlgMain.pnlFileType.pnlOptions.grpTIFFOptions.grpCompression.ddCompression.add("item", "LZW");
-    dlgMain.pnlFileType.pnlOptions.grpTIFFOptions.grpCompression.ddCompression.add("item", "ZIP");
-    dlgMain.pnlFileType.pnlOptions.grpTIFFOptions.grpCompression.ddCompression.add("item", "JPEG");
-    
-    dlgMain.pnlFileType.pnlOptions.grpTIFFOptions.grpCompression.ddCompression.onChange = function() {
-		if (this.selection.index == compJPEGIndex) {
-			dlgMain.pnlFileType.pnlOptions.grpTIFFOptions.grpQuality.stQuality.enabled = true;
-			dlgMain.pnlFileType.pnlOptions.grpTIFFOptions.grpQuality.etQuality.enabled = true;
-            dlgMain.pnlFileType.pnlOptions.grpTIFFOptions.grpQuality.slQuality.enabled = true;
-		} else {
-			dlgMain.pnlFileType.pnlOptions.grpTIFFOptions.grpQuality.stQuality.enabled = false;
-			dlgMain.pnlFileType.pnlOptions.grpTIFFOptions.grpQuality.etQuality.enabled = false;
-            dlgMain.pnlFileType.pnlOptions.grpTIFFOptions.grpQuality.slQuality.enabled = false;
-		}
-    }
-
-	dlgMain.pnlFileType.pnlOptions.grpTIFFOptions.grpQuality = dlgMain.pnlFileType.pnlOptions.grpTIFFOptions.add("group");
-    dlgMain.pnlFileType.pnlOptions.grpTIFFOptions.grpQuality.alignment = 'left';
-    dlgMain.pnlFileType.pnlOptions.grpTIFFOptions.grpQuality.stQuality = dlgMain.pnlFileType.pnlOptions.grpTIFFOptions.grpQuality.add("statictext", undefined, strLabelQuality);
-    
-    dlgMain.pnlFileType.pnlOptions.grpTIFFOptions.grpQuality.slQuality = dlgMain.pnlFileType.pnlOptions.grpTIFFOptions.grpQuality.add('slider', undefined, exportInfo.tiffJpegQuality, 0, 12);
-    dlgMain.pnlFileType.pnlOptions.grpTIFFOptions.grpQuality.slQuality.preferredSize = [99, -1];
-    dlgMain.pnlFileType.pnlOptions.grpTIFFOptions.grpQuality.etQuality = dlgMain.pnlFileType.pnlOptions.grpTIFFOptions.grpQuality.add("edittext", undefined, exportInfo.tiffJpegQuality.toString());
-    dlgMain.pnlFileType.pnlOptions.grpTIFFOptions.grpQuality.etQuality.preferredSize.width = StrToIntWithDefault( stretQuality, 30 );
-    dlgMain.pnlFileType.pnlOptions.grpTIFFOptions.grpQuality.etQuality.onChange = makeJPEGQualityFieldValidationFunction(undefined, dlgMain.pnlFileType.pnlOptions.grpTIFFOptions.grpQuality.slQuality);
-    dlgMain.pnlFileType.pnlOptions.grpTIFFOptions.grpQuality.slQuality.onChanging = (function(field) { return function () {  this.value = field.text = Math.round(this.value); }; })(dlgMain.pnlFileType.pnlOptions.grpTIFFOptions.grpQuality.etQuality);
-    dlgMain.pnlFileType.pnlOptions.grpTIFFOptions.grpQuality.slQuality.onChange = dlgMain.pnlFileType.pnlOptions.grpTIFFOptions.grpQuality.slQuality.onChanging;
-
-
-	var index;
-    switch (exportInfo.tiffCompression) {
-		case TIFFEncoding.NONE:     index = compNoneIndex; break;
-        case TIFFEncoding.TIFFLZW:  index = compLZWIndex; break;
-        case TIFFEncoding.TIFFZIP:  index = compZIPIndex; break;
-        case TIFFEncoding.JPEG:     index = compJPEGIndex; break;
-        default: index = compNoneIndex;    break;
-    }
-
-    dlgMain.pnlFileType.pnlOptions.grpTIFFOptions.grpCompression.ddCompression.items[index].selected = true;
-
-	if (TIFFEncoding.JPEG != exportInfo.tiffCompression) { // if not JPEG
-		dlgMain.pnlFileType.pnlOptions.grpTIFFOptions.grpQuality.stQuality.enabled = false;
-		dlgMain.pnlFileType.pnlOptions.grpTIFFOptions.grpQuality.etQuality.enabled = false;
-        dlgMain.pnlFileType.pnlOptions.grpTIFFOptions.grpQuality.slQuality.enabled = false;
-    }
-    
-
-	// PDF options
-    dlgMain.pnlFileType.pnlOptions.grpPDFOptions = dlgMain.pnlFileType.pnlOptions.add("group");
-    dlgMain.pnlFileType.pnlOptions.grpPDFOptions.orientation = 'column';
-    dlgMain.pnlFileType.pnlOptions.grpPDFOptions.visible = (exportInfo.fileType == pdfIndex);
-
-    dlgMain.pnlFileType.pnlOptions.grpPDFOptions.grpCompression = dlgMain.pnlFileType.pnlOptions.grpPDFOptions.add("group");
-    dlgMain.pnlFileType.pnlOptions.grpPDFOptions.grpCompression.alignment = 'left';
-    dlgMain.pnlFileType.pnlOptions.grpPDFOptions.grpCompression.add("statictext", undefined, strLabelEncoding);
-
-    dlgMain.pnlFileType.pnlOptions.grpPDFOptions.grpCompression.rbZip = dlgMain.pnlFileType.pnlOptions.grpPDFOptions.grpCompression.add("radiobutton", undefined, "ZIP");
-    dlgMain.pnlFileType.pnlOptions.grpPDFOptions.grpCompression.rbZip.onClick = function() {
-		dlgMain.pnlFileType.pnlOptions.grpPDFOptions.grpQuality.stQuality.enabled = false;   
-		dlgMain.pnlFileType.pnlOptions.grpPDFOptions.grpQuality.etQuality.enabled = false;   
-		dlgMain.pnlFileType.pnlOptions.grpPDFOptions.grpQuality.slQuality.enabled = false;   
-	}
-
-    dlgMain.pnlFileType.pnlOptions.grpPDFOptions.grpCompression.rbJpeg = dlgMain.pnlFileType.pnlOptions.grpPDFOptions.grpCompression.add("radiobutton", undefined, "JPEG");
-    dlgMain.pnlFileType.pnlOptions.grpPDFOptions.grpCompression.rbJpeg.onClick = function() {
-		dlgMain.pnlFileType.pnlOptions.grpPDFOptions.grpQuality.stQuality.enabled = true;   
-		dlgMain.pnlFileType.pnlOptions.grpPDFOptions.grpQuality.etQuality.enabled = true;   
-		dlgMain.pnlFileType.pnlOptions.grpPDFOptions.grpQuality.slQuality.enabled = true;   
-	}
-	
-	dlgMain.pnlFileType.pnlOptions.grpPDFOptions.grpQuality = dlgMain.pnlFileType.pnlOptions.grpPDFOptions.add("group");
-    dlgMain.pnlFileType.pnlOptions.grpPDFOptions.grpQuality.alignment = 'left';
-    
-    dlgMain.pnlFileType.pnlOptions.grpPDFOptions.grpQuality.stQuality = dlgMain.pnlFileType.pnlOptions.grpPDFOptions.grpQuality.add("statictext", undefined, strLabelQuality);
-
-    dlgMain.pnlFileType.pnlOptions.grpPDFOptions.grpQuality.slQuality = dlgMain.pnlFileType.pnlOptions.grpPDFOptions.grpQuality.add('slider', undefined, exportInfo.pdfJpegQuality, 0, 12);
-    dlgMain.pnlFileType.pnlOptions.grpPDFOptions.grpQuality.slQuality.preferredSize = [99, -1];
-    dlgMain.pnlFileType.pnlOptions.grpPDFOptions.grpQuality.etQuality = dlgMain.pnlFileType.pnlOptions.grpPDFOptions.grpQuality.add("edittext", undefined, exportInfo.pdfJpegQuality.toString());
-    dlgMain.pnlFileType.pnlOptions.grpPDFOptions.grpQuality.etQuality.preferredSize.width = StrToIntWithDefault( stretQuality, 30 );
-    dlgMain.pnlFileType.pnlOptions.grpPDFOptions.grpQuality.etQuality.onChange = makeJPEGQualityFieldValidationFunction(undefined, dlgMain.pnlFileType.pnlOptions.grpPDFOptions.grpQuality.slQuality);
-    dlgMain.pnlFileType.pnlOptions.grpPDFOptions.grpQuality.slQuality.onChanging = (function(field) { return function () {  this.value = field.text = Math.round(this.value); }; })(dlgMain.pnlFileType.pnlOptions.grpPDFOptions.grpQuality.etQuality);
-    dlgMain.pnlFileType.pnlOptions.grpPDFOptions.grpQuality.slQuality.onChange = dlgMain.pnlFileType.pnlOptions.grpPDFOptions.grpQuality.slQuality.onChanging;
-
-    switch (exportInfo.pdfEncoding) {
-        case PDFEncoding.PDFZIP: 
-			dlgMain.pnlFileType.pnlOptions.grpPDFOptions.grpCompression.rbZip.value  = true;    break;
-        case PDFEncoding.JPEG:
-        default: 
-			dlgMain.pnlFileType.pnlOptions.grpPDFOptions.grpCompression.rbJpeg.value = true;    break;
-    }
-    
-    if (PDFEncoding.JPEG != exportInfo.pdfEncoding) {
-        dlgMain.pnlFileType.pnlOptions.grpPDFOptions.grpQuality.stQuality.enabled = false;
-        dlgMain.pnlFileType.pnlOptions.grpPDFOptions.grpQuality.etQuality.enabled = false;
-		dlgMain.pnlFileType.pnlOptions.grpPDFOptions.grpQuality.slQuality.enabled = false;   
-    }
-
-	// Targa options
-	dlgMain.pnlFileType.pnlOptions.grpTargaOptions = dlgMain.pnlFileType.pnlOptions.add("group");
-    dlgMain.pnlFileType.pnlOptions.grpTargaOptions.add("statictext", undefined, strLabelDepth);
-    dlgMain.pnlFileType.pnlOptions.grpTargaOptions.visible = (exportInfo.fileType == targaIndex);
-
-    dlgMain.pnlFileType.pnlOptions.grpTargaOptions.rb16bit = dlgMain.pnlFileType.pnlOptions.grpTargaOptions.add( "radiobutton", undefined, strRadiobutton16bit);
-    dlgMain.pnlFileType.pnlOptions.grpTargaOptions.rb24bit = dlgMain.pnlFileType.pnlOptions.grpTargaOptions.add( "radiobutton", undefined, strRadiobutton24bit);
-    dlgMain.pnlFileType.pnlOptions.grpTargaOptions.rb32bit = dlgMain.pnlFileType.pnlOptions.grpTargaOptions.add( "radiobutton", undefined, strRadiobutton32bit);
-
-    switch (exportInfo.targaDepth) {
-        case TargaBitsPerPixels.SIXTEEN:     dlgMain.pnlFileType.pnlOptions.grpTargaOptions.rb16bit.value = true;   break;
-        case TargaBitsPerPixels.TWENTYFOUR:  dlgMain.pnlFileType.pnlOptions.grpTargaOptions.rb24bit.value = true;   break;
-        case TargaBitsPerPixels.THIRTYTWO:   dlgMain.pnlFileType.pnlOptions.grpTargaOptions.rb32bit.value = true;   break;
-        default: dlgMain.pnlFileType.pnlOptions.grpTargaOptions.rb24bit.value = true;   break;
-    }
-
-
-	// BMP options
-    dlgMain.pnlFileType.pnlOptions.grpBMPOptions = dlgMain.pnlFileType.pnlOptions.add("group");
-    dlgMain.pnlFileType.pnlOptions.grpBMPOptions.add("statictext", undefined, strLabelDepth);
-    dlgMain.pnlFileType.pnlOptions.grpBMPOptions.visible = (exportInfo.fileType == bmpIndex);
-
-    dlgMain.pnlFileType.pnlOptions.grpBMPOptions.rb16bit = dlgMain.pnlFileType.pnlOptions.grpBMPOptions.add( "radiobutton", undefined, strRadiobutton16bit);
-    dlgMain.pnlFileType.pnlOptions.grpBMPOptions.rb24bit = dlgMain.pnlFileType.pnlOptions.grpBMPOptions.add( "radiobutton", undefined, strRadiobutton24bit);
-    dlgMain.pnlFileType.pnlOptions.grpBMPOptions.rb32bit = dlgMain.pnlFileType.pnlOptions.grpBMPOptions.add( "radiobutton", undefined, strRadiobutton32bit);
-
-    switch (exportInfo.bmpDepth) {
-        case BMPDepthType.SIXTEEN:   dlgMain.pnlFileType.pnlOptions.grpBMPOptions.rb16bit.value = true;   break;
-        case BMPDepthType.TWENTYFOUR:dlgMain.pnlFileType.pnlOptions.grpBMPOptions.rb24bit.value = true;   break;
-        case BMPDepthType.THIRTYTWO: dlgMain.pnlFileType.pnlOptions.grpBMPOptions.rb32bit.value = true;   break;
-        default: dlgMain.pnlFileType.pnlOptions.grpBMPOptions.rb24bit.value = true;   break;
-    }
 
     dlgMain.ddFileType.items[exportInfo.fileType].selected = true;
 
@@ -637,53 +440,10 @@ function settingDialog(exportInfo)
     exportInfo.fileNamePrefix = dlgMain.etFileNamePrefix.text;
     exportInfo.selectionOnly = dlgMain.cbSelection.value;
     exportInfo.fileType = dlgMain.ddFileType.selection.index;
-    exportInfo.icc = dlgMain.cbIcc.value;
     exportInfo.jpegQuality = dlgMain.pnlFileType.pnlOptions.grpJPEGOptions.etQuality.text;
-    exportInfo.psdMaxComp = dlgMain.pnlFileType.pnlOptions.grpPSDOptions.cbMax.value;
     exportInfo.png8Transparency = dlgMain.pnlFileType.pnlOptions.grpPNG8Options.png8Trans.value;
     exportInfo.png8Interlaced = dlgMain.pnlFileType.pnlOptions.grpPNG8Options.png8Inter.value;
-    exportInfo.png24Transparency = dlgMain.pnlFileType.pnlOptions.grpPNG24Options.png24Trans.value;
-    exportInfo.png24Interlaced = dlgMain.pnlFileType.pnlOptions.grpPNG24Options.png24Inter.value;
-    index = dlgMain.pnlFileType.pnlOptions.grpTIFFOptions.grpCompression.ddCompression.selection.index;
     exportInfo.prefixIndex = dlgMain.cbFileNamePrefixIndex.value;
-    if (index == compNoneIndex) {
-		exportInfo.tiffCompression = TIFFEncoding.NONE;
-	}
-    if (index == compLZWIndex) {
-		exportInfo.tiffCompression = TIFFEncoding.TIFFLZW;
-	}
-    if (index == compZIPIndex) {
-		exportInfo.tiffCompression = TIFFEncoding.TIFFZIP;
-	}
-    if (index == compJPEGIndex) {
-		exportInfo.tiffCompression = TIFFEncoding.JPEG;
-	}
-    exportInfo.tiffJpegQuality = dlgMain.pnlFileType.pnlOptions.grpTIFFOptions.grpQuality.etQuality.text;
-    if (dlgMain.pnlFileType.pnlOptions.grpPDFOptions.grpCompression.rbZip.value) {
-		exportInfo.pdfEncoding = PDFEncoding.PDFZIP;
-	}
-    if (dlgMain.pnlFileType.pnlOptions.grpPDFOptions.grpCompression.rbJpeg.value) {
-		exportInfo.pdfEncoding = PDFEncoding.JPEG;
-	}
-    exportInfo.pdfJpegQuality = dlgMain.pnlFileType.pnlOptions.grpPDFOptions.grpQuality.etQuality.text;
-    if (dlgMain.pnlFileType.pnlOptions.grpTargaOptions.rb16bit.value) {
-		exportInfo.targaDepth = TargaBitsPerPixels.SIXTEEN;
-	}
-    if (dlgMain.pnlFileType.pnlOptions.grpTargaOptions.rb24bit.value) {
-		exportInfo.targaDepth = TargaBitsPerPixels.TWENTYFOUR;
-	}
-    if (dlgMain.pnlFileType.pnlOptions.grpTargaOptions.rb32bit.value) {
-		exportInfo.targaDepth = TargaBitsPerPixels.THIRTYTWO;
-	}
-    if (dlgMain.pnlFileType.pnlOptions.grpBMPOptions.rb16bit.value) {
-		exportInfo.bmpDepth = BMPDepthType.SIXTEEN;
-	}
-    if (dlgMain.pnlFileType.pnlOptions.grpBMPOptions.rb24bit.value) {
-		exportInfo.bmpDepth = BMPDepthType.TWENTYFOUR;
-	}
-    if (dlgMain.pnlFileType.pnlOptions.grpBMPOptions.rb32bit.value) { 
-		exportInfo.bmpDepth = BMPDepthType.THIRTYTWO;
-	}
 
     return result;
 }
@@ -696,14 +456,8 @@ function settingDialog(exportInfo)
 // Return: <none>, all panels are now hidden
 ///////////////////////////////////////////////////////////////////////////////
 function hideAllFileTypePanel(dlgMain) {
-    dlgMain.pnlFileType.pnlOptions.grpPSDOptions.hide();
     dlgMain.pnlFileType.pnlOptions.grpJPEGOptions.hide();
-    dlgMain.pnlFileType.pnlOptions.grpTIFFOptions.hide();
-    dlgMain.pnlFileType.pnlOptions.grpPDFOptions.hide();
-    dlgMain.pnlFileType.pnlOptions.grpTargaOptions.hide();
-    dlgMain.pnlFileType.pnlOptions.grpBMPOptions.hide();
     dlgMain.pnlFileType.pnlOptions.grpPNG8Options.hide();
-    dlgMain.pnlFileType.pnlOptions.grpPNG24Options.hide();
 }
 
 
@@ -718,18 +472,8 @@ function initExportInfo(exportInfo)
     exportInfo.destination = new String("");
     exportInfo.fileNamePrefix = new String("untitled_");
     exportInfo.selectionOnly = false;
-    exportInfo.fileType = psdIndex;
-    exportInfo.icc = true;
+    exportInfo.fileType = jpegIndex;
     exportInfo.jpegQuality = 8;
-    exportInfo.psdMaxComp = true;
-    exportInfo.tiffCompression = TIFFEncoding.NONE;
-    exportInfo.tiffJpegQuality = 8;
-    exportInfo.pdfEncoding = PDFEncoding.JPEG;
-    exportInfo.pdfJpegQuality = 8;
-    exportInfo.targaDepth = TargaBitsPerPixels.TWENTYFOUR;
-    exportInfo.bmpDepth = BMPDepthType.TWENTYFOUR;
-    exportInfo.png24Transparency = true;
-    exportInfo.png24Interlaced = false;
     exportInfo.png8Transparency = true;
     exportInfo.png8Interlaced = false;
     exportInfo.prefixIndex = true;
