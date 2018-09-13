@@ -59,20 +59,11 @@ var strLabelFileNamePrefix = localize("$$$/JavaScripts/LayerCompsToTinify/FileNa
 var strCheckboxSelectionOnly = localize("$$$/JavaScripts/LayerCompsToTinify/SelectedOnly=&Selected Layer Comps Only");
 var strLabelFileType = localize("$$$/JavaScripts/LayerCompsToTinify/FileType=File Type:");
 var strCheckboxIncludeICCProfile = localize("$$$/JavaScripts/LayerCompsToTinify/IncludeICC=&Include ICC Profile");
-var strJPEGOptions = localize("$$$/JavaScripts/LayerCompsToTinify/JPEGOptions=JPEG Options:");
-var strLabelQuality = localize("$$$/JavaScripts/LayerCompsToTinify/Quality=Quality:");
-var strPSDOptions = localize("$$$/JavaScripts/LayerCompsToTinify/PSDOptions=PSD Options:");
-var strCheckboxMaximizeCompatibility = localize("$$$/JavaScripts/LayerCompsToTinify/Maximize=&Maximize Compatibility");
+var strJPEGOptions = localize("$$$/JavaScripts/LayerCompsToTinify/JPEGOptions=JPEG Export Options:");
+var strLabelResize = localize("$$$/JavaScripts/LayerCompsToTinify/Resize=Resize percentage:");
 var strLabelImageCompression = localize("$$$/JavaScripts/LayerCompsToTinify/ImageCompression=Image Compression:");
 var strNone = localize("$$$/JavaScripts/LayerCompsToTinify/None=None");
-var strPDFOptions = localize("$$$/JavaScripts/LayerCompsToTinify/PDFOptions=PDF Options:");
-var strLabelEncoding = localize("$$$/JavaScripts/LayerCompsToTinify/Encoding=Encoding:");
-var strTargaOptions = localize("$$$/JavaScripts/LayerCompsToTinify/TargaOptions=Targa Options:");
 var strLabelDepth = localize("$$$/JavaScripts/LayerCompsToTinify/Depth=Depth:");
-var strRadiobutton16bit = localize("$$$/JavaScripts/LayerCompsToTinify/Bit16=16bit");
-var strRadiobutton24bit = localize("$$$/JavaScripts/LayerCompsToTinify/Bit24=24bit");
-var strRadiobutton32bit = localize("$$$/JavaScripts/LayerCompsToTinify/Bit32=32bit");
-var strBMPOptions = localize("$$$/JavaScripts/LayerCompsToTinify/BMPOptions=BMP Options:");
 var strAlertSpecifyDestination = localize("$$$/JavaScripts/LayerCompsToTinify/SpecifyDestination=Please specify destination.");
 var strAlertDestinationNotExist = localize("$$$/JavaScripts/LayerCompsToTinify/DestionationDoesNotExist=Destination does not exist.");
 var strTitleSelectDestination = localize("$$$/JavaScripts/LayerCompsToTinify/SelectDestination=Select Destination");
@@ -83,16 +74,13 @@ var strAlertNoLayerCompsSelected = localize("$$$/JavaScripts/LayerCompsToTinify/
 var strAlertWasSuccessful = localize("$$$/JavaScripts/LayerCompsToTinify/Success= was successful.");
 var strUnexpectedError = localize("$$$/JavaScripts/LayerCompsToTinify/Unexpectedd=Unexpected error");
 var strMessage = localize("$$$/JavaScripts/LayerCompsToTinify/Message=Layer Comps To Tinify action settings");
-var stretQuality = localize( "$$$/locale_specific/JavaScripts/LayerCompsToTinify/ETQualityLength=30" );
+var stretResize = localize( "$$$/locale_specific/JavaScripts/LayerCompsToTinify/ETResizeLength=40" );
 var stretDestination = localize( "$$$/locale_specific/JavaScripts/LayerCompsToTinify/ETDestinationLength=160" );
 var strddFileType = localize( "$$$/locale_specific/JavaScripts/LayerCompsToTinify/DDFileType=100" );
 var strpnlOptions = localize( "$$$/locale_specific/JavaScripts/LayerCompsToTinify/PNLOptions=100" );
 var strCreateFolder = localize( "$$$/JavaScripts/LayerCompsToTinify/CreateFolder=The folder does not exist. Do you wish to create it?^r" );
 var strCouldNotCreate = localize( "$$$/JavaScripts/LayerCompsToTinify/CouldNotCreate=The folder could not be created." );
-var strPNG8Options = localize("$$$/JavaScripts/ExportLayersToFiles/PNG8Options=PNG-8 Options:");
-var strCheckboxPNGTransparency = localize("$$$/JavaScripts/ExportLayersToFiles/Transparency=Transparency");
-var strCheckboxPNGInterlaced = localize("$$$/JavaScripts/ExportLayersToFiles/Interlaced=Interlaced");
-var strPNG24Options = localize("$$$/JavaScripts/ExportLayersToFiles/PNG24Options=PNG-24 Options:");
+var strPNG8Options = localize("$$$/JavaScripts/ExportLayersToFiles/PNG8Options=PNG Export Options:");
 
 // the drop down list indexes for file type
 var jpegIndex = 0;
@@ -323,23 +311,19 @@ function settingDialog(exportInfo)
     dlgMain.ddFileType.alignment = 'left';
 
     dlgMain.ddFileType.add("item", "JPEG");
-    dlgMain.ddFileType.add("item", "PNG-8");
+    dlgMain.ddFileType.add("item", "PNG");
 
 	dlgMain.ddFileType.onChange = function() {
-		hideAllFileTypePanel(dlgMain);
 		switch(this.selection.index) {
 			case jpegIndex:	
 				dlgMain.pnlFileType.pnlOptions.text = strJPEGOptions;
-				dlgMain.pnlFileType.pnlOptions.grpJPEGOptions.show();	
 				break;
 			case png8Index:		
 			default:		
 				dlgMain.pnlFileType.pnlOptions.text = strPNG8Options;
-				dlgMain.pnlFileType.pnlOptions.grpPNG8Options.show();	
 				break;
 		}
 	}
-	    
 
 	// -- now the options panel that changes
     dlgMain.pnlFileType.pnlOptions = dlgMain.pnlFileType.add("panel", undefined, "Options");
@@ -347,25 +331,16 @@ function settingDialog(exportInfo)
     dlgMain.pnlFileType.pnlOptions.orientation = 'stack';
     dlgMain.pnlFileType.pnlOptions.preferredSize.height = StrToIntWithDefault( strpnlOptions, 100 );
 
-    // PNG8 options
-    dlgMain.pnlFileType.pnlOptions.grpPNG8Options = dlgMain.pnlFileType.pnlOptions.add("group");
-    dlgMain.pnlFileType.pnlOptions.grpPNG8Options.png8Trans = dlgMain.pnlFileType.pnlOptions.grpPNG8Options.add("checkbox", undefined, strCheckboxPNGTransparency.toString());
-    dlgMain.pnlFileType.pnlOptions.grpPNG8Options.png8Inter = dlgMain.pnlFileType.pnlOptions.grpPNG8Options.add("checkbox", undefined, strCheckboxPNGInterlaced.toString());
-    dlgMain.pnlFileType.pnlOptions.grpPNG8Options.png8Trans.value = exportInfo.png8Transparency;
-    dlgMain.pnlFileType.pnlOptions.grpPNG8Options.png8Inter.value = exportInfo.png8Interlaced;
-    dlgMain.pnlFileType.pnlOptions.grpPNG8Options.visible = (exportInfo.fileType == png8Index);
-    
-	// JPEG options
-    dlgMain.pnlFileType.pnlOptions.grpJPEGOptions = dlgMain.pnlFileType.pnlOptions.add("group");
-    dlgMain.pnlFileType.pnlOptions.grpJPEGOptions.add("statictext", undefined, strLabelQuality);
-    dlgMain.pnlFileType.pnlOptions.grpJPEGOptions.slQuality = dlgMain.pnlFileType.pnlOptions.grpJPEGOptions.add('slider', undefined, exportInfo.jpegQuality, 0, 12);
-    dlgMain.pnlFileType.pnlOptions.grpJPEGOptions.slQuality.preferredSize = [99, -1];
-    dlgMain.pnlFileType.pnlOptions.grpJPEGOptions.etQuality = dlgMain.pnlFileType.pnlOptions.grpJPEGOptions.add("edittext", undefined, exportInfo.jpegQuality.toString());
-    dlgMain.pnlFileType.pnlOptions.grpJPEGOptions.etQuality.preferredSize.width = StrToIntWithDefault( stretQuality, 30 );
-    dlgMain.pnlFileType.pnlOptions.grpJPEGOptions.etQuality.onChange = makeJPEGQualityFieldValidationFunction(undefined, dlgMain.pnlFileType.pnlOptions.grpJPEGOptions.slQuality);
-    dlgMain.pnlFileType.pnlOptions.grpJPEGOptions.slQuality.onChanging = (function(field) { return function () { this.value = field.text = Math.round(this.value); }; })(dlgMain.pnlFileType.pnlOptions.grpJPEGOptions.etQuality);
-    dlgMain.pnlFileType.pnlOptions.grpJPEGOptions.slQuality.onChange = dlgMain.pnlFileType.pnlOptions.grpJPEGOptions.slQuality.onChanging;
-    dlgMain.pnlFileType.pnlOptions.grpJPEGOptions.visible = (exportInfo.fileType == jpegIndex);
+	// Image resize percentage options
+    dlgMain.pnlFileType.pnlOptions.grpImageResizeOptions = dlgMain.pnlFileType.pnlOptions.add("group");
+    dlgMain.pnlFileType.pnlOptions.grpImageResizeOptions.add("statictext", undefined, strLabelResize);
+    dlgMain.pnlFileType.pnlOptions.grpImageResizeOptions.slResize = dlgMain.pnlFileType.pnlOptions.grpImageResizeOptions.add('slider', undefined, exportInfo.imageResize, 10, 100);
+    dlgMain.pnlFileType.pnlOptions.grpImageResizeOptions.slResize.preferredSize = [99, -1];
+    dlgMain.pnlFileType.pnlOptions.grpImageResizeOptions.etResize = dlgMain.pnlFileType.pnlOptions.grpImageResizeOptions.add("edittext", undefined, exportInfo.imageResize.toString());
+    dlgMain.pnlFileType.pnlOptions.grpImageResizeOptions.etResize.preferredSize.width = StrToIntWithDefault( stretResize, 40 );
+    dlgMain.pnlFileType.pnlOptions.grpImageResizeOptions.etResize.onChange = makeResizeFieldValidationFunction(undefined, dlgMain.pnlFileType.pnlOptions.grpImageResizeOptions.slResize);
+    dlgMain.pnlFileType.pnlOptions.grpImageResizeOptions.slResize.onChanging = (function(field) { return function () { this.value = field.text = Math.round(this.value); }; })(dlgMain.pnlFileType.pnlOptions.grpImageResizeOptions.etResize);
+    dlgMain.pnlFileType.pnlOptions.grpImageResizeOptions.slResize.onChange = dlgMain.pnlFileType.pnlOptions.grpImageResizeOptions.slResize.onChanging;
 
     dlgMain.ddFileType.items[exportInfo.fileType].selected = true;
 
@@ -412,13 +387,13 @@ function settingDialog(exportInfo)
     dlgMain.etHelp.alignment = 'fill';
 
 	// do not allow anything except for numbers 0-9
-	//dlgMain.pnlFileType.pnlOptions.grpPDFOptions.grpQuality.etQuality.addEventListener ('keydown', NumericEditKeyboardHandler);
+	//dlgMain.pnlFileType.pnlOptions.grpPDFOptions.grpQuality.etResize.addEventListener ('keydown', NumericEditKeyboardHandler);
 
 	// do not allow anything except for numbers 0-9
-	//dlgMain.pnlFileType.pnlOptions.grpTIFFOptions.grpQuality.etQuality.addEventListener ('keydown', NumericEditKeyboardHandler);
+	//dlgMain.pnlFileType.pnlOptions.grpTIFFOptions.grpQuality.etResize.addEventListener ('keydown', NumericEditKeyboardHandler);
 
 	// do not allow anything except for numbers 0-9
-	//dlgMain.pnlFileType.pnlOptions.grpJPEGOptions.etQuality.addEventListener ('keydown', NumericEditKeyboardHandler);
+	//dlgMain.pnlFileType.pnlOptions.grpImageResizeOptions.etResize.addEventListener ('keydown', NumericEditKeyboardHandler);
 
 	 dlgMain.onShow = function() {
 		 dlgMain.ddFileType.onChange();
@@ -440,24 +415,10 @@ function settingDialog(exportInfo)
     exportInfo.fileNamePrefix = dlgMain.etFileNamePrefix.text;
     exportInfo.selectionOnly = dlgMain.cbSelection.value;
     exportInfo.fileType = dlgMain.ddFileType.selection.index;
-    exportInfo.jpegQuality = dlgMain.pnlFileType.pnlOptions.grpJPEGOptions.etQuality.text;
-    exportInfo.png8Transparency = dlgMain.pnlFileType.pnlOptions.grpPNG8Options.png8Trans.value;
-    exportInfo.png8Interlaced = dlgMain.pnlFileType.pnlOptions.grpPNG8Options.png8Inter.value;
+    exportInfo.imageResize = dlgMain.pnlFileType.pnlOptions.grpImageResizeOptions.etResize.text;
     exportInfo.prefixIndex = dlgMain.cbFileNamePrefixIndex.value;
 
     return result;
-}
-
-
-///////////////////////////////////////////////////////////////////////////////
-// Function: hideAllFileTypePanel
-// Usage: hide all the panels in the common actions
-// Input: dlgMain is the main dialog for this script
-// Return: <none>, all panels are now hidden
-///////////////////////////////////////////////////////////////////////////////
-function hideAllFileTypePanel(dlgMain) {
-    dlgMain.pnlFileType.pnlOptions.grpJPEGOptions.hide();
-    dlgMain.pnlFileType.pnlOptions.grpPNG8Options.hide();
 }
 
 
@@ -473,9 +434,7 @@ function initExportInfo(exportInfo)
     exportInfo.fileNamePrefix = new String("untitled_");
     exportInfo.selectionOnly = false;
     exportInfo.fileType = jpegIndex;
-    exportInfo.jpegQuality = 8;
-    exportInfo.png8Transparency = true;
-    exportInfo.png8Interlaced = false;
+    exportInfo.imageResize = 100;
     exportInfo.prefixIndex = true;
 
     try {
@@ -512,7 +471,7 @@ function saveFile( docRef, fileNameBody, exportInfo)
 	var document = docRef;
 
 	// Choose the scale percentage
-	var percentage = 100;
+	var percentage = exportInfo.imageResize;
 	if (percentage === undefined || percentage < 10 || percentage > 100) {
 		percentage = 100;
 	}
@@ -717,12 +676,12 @@ function StrToIntWithDefault( s, n ) {
 }
 
 ///////////////////////////////////////////////////////////////////////////
-// Function: makeJPEGQualityFieldValidationFunction
-// Usage: Validation for JPEG Quality fields
+// Function: makeResizeFieldValidationFunction
+// Usage: Validation for Resize fields
 // Input: either an integer or a holding property
 // Return: a function for .onChange
 ///////////////////////////////////////////////////////////////////////////
-function makeJPEGQualityFieldValidationFunction(defaultValue, alternateProperty)
+function makeResizeFieldValidationFunction(defaultValue, alternateProperty)
 {
     return function () 
         {
@@ -731,10 +690,10 @@ function makeJPEGQualityFieldValidationFunction(defaultValue, alternateProperty)
                 this.text = defaultValue ? defaultValue : alternateProperty.value;
             else
             {
-                if(val > 12)
-                    val = 12;
-                if(val < 0)
-                    val = 0;
+                if(val > 100)
+                    val = 100;
+                if(val < 10)
+                    val = 10;
                 this.text = val;
                 if(alternateProperty)
                     alternateProperty.value = val;
