@@ -4,8 +4,10 @@
 // ZStrings and auto layout by Tom Ruark
 // PNG support by Jeffrey Tranberry
 
+// Modified for TinyPNG and TinyJPG 2018.
+
 /*
-@@@BUILDINFO@@@ Layer Comps To Files.jsx 1.0.0.25
+@@@BUILDINFO@@@ Layer Comps To Tinify.jsx 1.0.0.25
 
 */
 
@@ -14,12 +16,12 @@
 // BEGIN__HARVEST_EXCEPTION_ZSTRING
 
 <javascriptresource>
-<name>$$$/JavaScripts/LayerCompsToFiles/Menu=Layer Comps to Files...</name>
+<name>$$$/JavaScripts/LayerCompsToTinify/Menu=Layer Comps To Tinify...</name>
     <category>layercomps</category>
-<eventid>cf34b502-2013-4d07-8431-1dfd634ee0cd</eventid>
+<eventid>05c43700-96e0-428d-8fef-ecb4d9b6f28f</eventid>
 <terminology><![CDATA[<< /Version 1 
                          /Events << 
-                          /cf34b502-2013-4d07-8431-1dfd634ee0cd [($$$/JavaScripts/LayerCompsToFiles/Action=Layer Comps to Files) /noDirectParam <<
+                          /05c43700-96e0-428d-8fef-ecb4d9b6f28f [($$$/JavaScripts/LayerCompsToTinify/Action=Layer Comps To Tinify) /noDirectParam <<
                           >>] 
                          >> 
                       >> ]]></terminology>
@@ -46,47 +48,47 @@ $.localize = true;
 //=================================================================
 
 // UI strings to be localized
-var strTitle = localize("$$$/JavaScripts/LayerCompsToFiles/Title=Layer Comps To Files");
-var strButtonRun = localize("$$$/JavaScripts/LayerCompsToFiles/Run=Run");
-var strButtonCancel = localize("$$$/JavaScripts/LayerCompsToFiles/Cancel=Cancel");
-var strHelpText = localize("$$$/JavaScripts/LayerCompsToFiles/Help=Please specify the format and location for saving each layer comp as a file.");
-var strLabelDestination = localize("$$$/JavaScripts/LayerCompsToFiles/Destination=Destination:");
-var strButtonBrowse = localize("$$$/JavaScripts/LayerCompsToFiles/Browse=&Browse...");
-var strLabelFileNamePrefix = localize("$$$/JavaScripts/LayerCompsToFiles/FileNamePrefix=File Name Prefix:");
-var strCheckboxSelectionOnly = localize("$$$/JavaScripts/LayerCompsToFiles/SelectedOnly=&Selected Layer Comps Only");
-var strLabelFileType = localize("$$$/JavaScripts/LayerCompsToFiles/FileType=File Type:");
-var strCheckboxIncludeICCProfile = localize("$$$/JavaScripts/LayerCompsToFiles/IncludeICC=&Include ICC Profile");
-var strJPEGOptions = localize("$$$/JavaScripts/LayerCompsToFiles/JPEGOptions=JPEG Options:");
-var strLabelQuality = localize("$$$/JavaScripts/LayerCompsToFiles/Quality=Quality:");
-var strPSDOptions = localize("$$$/JavaScripts/LayerCompsToFiles/PSDOptions=PSD Options:");
-var strCheckboxMaximizeCompatibility = localize("$$$/JavaScripts/LayerCompsToFiles/Maximize=&Maximize Compatibility");
-var strTIFFOptions = localize("$$$/JavaScripts/LayerCompsToFiles/TIFFOptions=TIFF Options:");
-var strLabelImageCompression = localize("$$$/JavaScripts/LayerCompsToFiles/ImageCompression=Image Compression:");
-var strNone = localize("$$$/JavaScripts/LayerCompsToFiles/None=None");
-var strPDFOptions = localize("$$$/JavaScripts/LayerCompsToFiles/PDFOptions=PDF Options:");
-var strLabelEncoding = localize("$$$/JavaScripts/LayerCompsToFiles/Encoding=Encoding:");
-var strTargaOptions = localize("$$$/JavaScripts/LayerCompsToFiles/TargaOptions=Targa Options:");
-var strLabelDepth = localize("$$$/JavaScripts/LayerCompsToFiles/Depth=Depth:");
-var strRadiobutton16bit = localize("$$$/JavaScripts/LayerCompsToFiles/Bit16=16bit");
-var strRadiobutton24bit = localize("$$$/JavaScripts/LayerCompsToFiles/Bit24=24bit");
-var strRadiobutton32bit = localize("$$$/JavaScripts/LayerCompsToFiles/Bit32=32bit");
-var strBMPOptions = localize("$$$/JavaScripts/LayerCompsToFiles/BMPOptions=BMP Options:");
-var strAlertSpecifyDestination = localize("$$$/JavaScripts/LayerCompsToFiles/SpecifyDestination=Please specify destination.");
-var strAlertDestinationNotExist = localize("$$$/JavaScripts/LayerCompsToFiles/DestionationDoesNotExist=Destination does not exist.");
-var strTitleSelectDestination = localize("$$$/JavaScripts/LayerCompsToFiles/SelectDestination=Select Destination");
-var strAlertDocumentMustBeOpened = localize("$$$/JavaScripts/LayerCompsToFiles/OneDocument=You must have a document open to export!");
-var strAlertNoLayerCompsFound = localize("$$$/JavaScripts/LayerCompsToFiles/NoComps=No layer comps found in document!");
-var strAlertNoLayerCompsSelected = localize("$$$/JavaScripts/LayerCompsToFiles/NoSelectedComps=No layer comps selected in document!");
+var strTitle = localize("$$$/JavaScripts/LayerCompsToTinify/Title=Layer Comps To Tinify");
+var strButtonRun = localize("$$$/JavaScripts/LayerCompsToTinify/Run=Run");
+var strButtonCancel = localize("$$$/JavaScripts/LayerCompsToTinify/Cancel=Cancel");
+var strHelpText = localize("$$$/JavaScripts/LayerCompsToTinify/Help=Please specify the format and location for saving each layer comp as a file.");
+var strLabelDestination = localize("$$$/JavaScripts/LayerCompsToTinify/Destination=Destination:");
+var strButtonBrowse = localize("$$$/JavaScripts/LayerCompsToTinify/Browse=&Browse...");
+var strLabelFileNamePrefix = localize("$$$/JavaScripts/LayerCompsToTinify/FileNamePrefix=File Name Prefix:");
+var strCheckboxSelectionOnly = localize("$$$/JavaScripts/LayerCompsToTinify/SelectedOnly=&Selected Layer Comps Only");
+var strLabelFileType = localize("$$$/JavaScripts/LayerCompsToTinify/FileType=File Type:");
+var strCheckboxIncludeICCProfile = localize("$$$/JavaScripts/LayerCompsToTinify/IncludeICC=&Include ICC Profile");
+var strJPEGOptions = localize("$$$/JavaScripts/LayerCompsToTinify/JPEGOptions=JPEG Options:");
+var strLabelQuality = localize("$$$/JavaScripts/LayerCompsToTinify/Quality=Quality:");
+var strPSDOptions = localize("$$$/JavaScripts/LayerCompsToTinify/PSDOptions=PSD Options:");
+var strCheckboxMaximizeCompatibility = localize("$$$/JavaScripts/LayerCompsToTinify/Maximize=&Maximize Compatibility");
+var strTIFFOptions = localize("$$$/JavaScripts/LayerCompsToTinify/TIFFOptions=TIFF Options:");
+var strLabelImageCompression = localize("$$$/JavaScripts/LayerCompsToTinify/ImageCompression=Image Compression:");
+var strNone = localize("$$$/JavaScripts/LayerCompsToTinify/None=None");
+var strPDFOptions = localize("$$$/JavaScripts/LayerCompsToTinify/PDFOptions=PDF Options:");
+var strLabelEncoding = localize("$$$/JavaScripts/LayerCompsToTinify/Encoding=Encoding:");
+var strTargaOptions = localize("$$$/JavaScripts/LayerCompsToTinify/TargaOptions=Targa Options:");
+var strLabelDepth = localize("$$$/JavaScripts/LayerCompsToTinify/Depth=Depth:");
+var strRadiobutton16bit = localize("$$$/JavaScripts/LayerCompsToTinify/Bit16=16bit");
+var strRadiobutton24bit = localize("$$$/JavaScripts/LayerCompsToTinify/Bit24=24bit");
+var strRadiobutton32bit = localize("$$$/JavaScripts/LayerCompsToTinify/Bit32=32bit");
+var strBMPOptions = localize("$$$/JavaScripts/LayerCompsToTinify/BMPOptions=BMP Options:");
+var strAlertSpecifyDestination = localize("$$$/JavaScripts/LayerCompsToTinify/SpecifyDestination=Please specify destination.");
+var strAlertDestinationNotExist = localize("$$$/JavaScripts/LayerCompsToTinify/DestionationDoesNotExist=Destination does not exist.");
+var strTitleSelectDestination = localize("$$$/JavaScripts/LayerCompsToTinify/SelectDestination=Select Destination");
+var strAlertDocumentMustBeOpened = localize("$$$/JavaScripts/LayerCompsToTinify/OneDocument=You must have a document open to export!");
+var strAlertNoLayerCompsFound = localize("$$$/JavaScripts/LayerCompsToTinify/NoComps=No layer comps found in document!");
+var strAlertNoLayerCompsSelected = localize("$$$/JavaScripts/LayerCompsToTinify/NoSelectedComps=No layer comps selected in document!");
 
-var strAlertWasSuccessful = localize("$$$/JavaScripts/LayerCompsToFiles/Success= was successful.");
-var strUnexpectedError = localize("$$$/JavaScripts/LayerCompsToFiles/Unexpectedd=Unexpected error");
-var strMessage = localize("$$$/JavaScripts/LayerCompsToFiles/Message=Layer Comps To Files action settings");
-var stretQuality = localize( "$$$/locale_specific/JavaScripts/LayerCompsToFiles/ETQualityLength=30" );
-var stretDestination = localize( "$$$/locale_specific/JavaScripts/LayerCompsToFiles/ETDestinationLength=160" );
-var strddFileType = localize( "$$$/locale_specific/JavaScripts/LayerCompsToFiles/DDFileType=100" );
-var strpnlOptions = localize( "$$$/locale_specific/JavaScripts/LayerCompsToFiles/PNLOptions=100" );
-var strCreateFolder = localize( "$$$/JavaScripts/LayerCompsToFiles/CreateFolder=The folder does not exist. Do you wish to create it?^r" );
-var strCouldNotCreate = localize( "$$$/JavaScripts/LayerCompsToFiles/CouldNotCreate=The folder could not be created." );
+var strAlertWasSuccessful = localize("$$$/JavaScripts/LayerCompsToTinify/Success= was successful.");
+var strUnexpectedError = localize("$$$/JavaScripts/LayerCompsToTinify/Unexpectedd=Unexpected error");
+var strMessage = localize("$$$/JavaScripts/LayerCompsToTinify/Message=Layer Comps To Tinify action settings");
+var stretQuality = localize( "$$$/locale_specific/JavaScripts/LayerCompsToTinify/ETQualityLength=30" );
+var stretDestination = localize( "$$$/locale_specific/JavaScripts/LayerCompsToTinify/ETDestinationLength=160" );
+var strddFileType = localize( "$$$/locale_specific/JavaScripts/LayerCompsToTinify/DDFileType=100" );
+var strpnlOptions = localize( "$$$/locale_specific/JavaScripts/LayerCompsToTinify/PNLOptions=100" );
+var strCreateFolder = localize( "$$$/JavaScripts/LayerCompsToTinify/CreateFolder=The folder does not exist. Do you wish to create it?^r" );
+var strCouldNotCreate = localize( "$$$/JavaScripts/LayerCompsToTinify/CouldNotCreate=The folder could not be created." );
 var strPNG8Options = localize("$$$/JavaScripts/ExportLayersToFiles/PNG8Options=PNG-8 Options:");
 var strCheckboxPNGTransparency = localize("$$$/JavaScripts/ExportLayersToFiles/Transparency=Transparency");
 var strCheckboxPNGInterlaced = localize("$$$/JavaScripts/ExportLayersToFiles/Interlaced=Interlaced");
@@ -1304,4 +1306,4 @@ function selectedCompsConfigError(docLayerComps, exportInfo)
     
 }
 
-// End Layer Comps To Files.jsx
+// End Layer Comps To Tinify.jsx
