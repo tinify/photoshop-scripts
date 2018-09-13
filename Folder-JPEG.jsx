@@ -12,7 +12,7 @@
 
 */
 
-function compressFile(file, percentage) {
+function compressJPEGFile(file, percentage) {
 
     // Open the file without dialogs like Adobe Camera Raw
     var opener = new ActionDescriptor();
@@ -29,7 +29,7 @@ function compressFile(file, percentage) {
 
     // Switch to 8 bit RGB if the image is 16 bit
     if (document.bitsPerChannel == BitsPerChannelType.SIXTEEN) {
-        convertBitDepth(document, 8);
+        convertBitDepth(8);
     }
 
     // Choose the scale percentage
@@ -40,13 +40,22 @@ function compressFile(file, percentage) {
     // Compress the document
     var tinify = new ActionDescriptor();
     tinify.putPath(charIDToTypeID("In  "), file); /* Overwrite original! */
-    tinify.putUnitDouble(charIDToTypeID("Scl "), charIDToTypeID("#Prc"), percentage );
+    tinify.putUnitDouble(charIDToTypeID("Scl "), charIDToTypeID("#Prc"), percentage);
+    tinify.putEnumerated(charIDToTypeID("FlTy"), charIDToTypeID("tyFT"), charIDToTypeID("tyJP")); /* Force JPEG */
 
     var compress = new ActionDescriptor();
     compress.putObject(charIDToTypeID("Usng"), charIDToTypeID("tinY"), tinify);
     executeAction(charIDToTypeID("Expr"), compress, DialogModes.NO);
 
     document.close(SaveOptions.DONOTSAVECHANGES);
+}
+
+function convertBitDepth(bitdepth) {
+    var id1 = charIDToTypeID("CnvM");
+    var convert = new ActionDescriptor();
+    var id2 = charIDToTypeID("Dpth");
+    convert.putInteger(id2, bitdepth);
+    executeAction(id1, convert, DialogModes.NO);
 }
 
 function compressJPEGFolder(folder) {
@@ -58,7 +67,7 @@ function compressJPEGFolder(folder) {
         } else {
             /* Only attempt to compress PNG files. */
             if ((child.name.slice(-5).toLowerCase() == ".jpeg")||(child.name.slice(-4).toLowerCase() == ".jpg")) {
-                compressFile(child);
+                compressJPEGFile(child);
             }
         }
     }

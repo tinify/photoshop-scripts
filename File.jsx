@@ -29,7 +29,7 @@ function compressFile(file, percentage) {
 
     // Switch to 8 bit RGB if the image is 16 bit
     if (document.bitsPerChannel == BitsPerChannelType.SIXTEEN) {
-        convertBitDepth(document, 8);
+        convertBitDepth(8);
     }
 
     // Choose the scale percentage
@@ -47,6 +47,14 @@ function compressFile(file, percentage) {
     executeAction(charIDToTypeID("Expr"), compress, DialogModes.NO);
 
     document.close(SaveOptions.DONOTSAVECHANGES);
+}
+
+function convertBitDepth(bitdepth) {
+    var id1 = charIDToTypeID("CnvM");
+    var convert = new ActionDescriptor();
+    var id2 = charIDToTypeID("Dpth");
+    convert.putInteger(id2, bitdepth);
+    executeAction(id1, convert, DialogModes.NO);
 }
 
 try {
