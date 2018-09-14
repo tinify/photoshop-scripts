@@ -4,7 +4,7 @@ These JavaScripts that can be added to Photoshop to help with compressing JPEG
 and PNG Images using the TinyPNG & TinyJPG Photoshop plugin.
 
 For more information about the Photoshop plugin you can visit
-[https://tinypng.com/photoshop].
+[tinypng.com/photoshop](https://tinypng.com/photoshop).
 
 ## Installation
 
@@ -12,8 +12,10 @@ The scripts may be copied to the 'Presets/Scripts' folder in Adobe Photoshop.
 
 This is usually found in the following locations:
 
+```
 Mac: /Applications/Adobe Photoshop (version)/Presets/Scripts/
 Windows: C:\Program Files\Adobe\Adobe Photoshop (version)\Presets\Scripts\
+```
 
 ## Usage
 
@@ -34,7 +36,11 @@ File >
 
 The scripts are written in JavaScript. You can easily create your own based on
 these examples. Photoshop also comes with many build-in scripts which you can
-look at to give more ideas of what is possible.
+look at to give more ideas of what is possible. If you are interested in
+scripting in more detail you can also take a look at the blog article which
+shows an example of how to
+[compress all images in a folder](http://voormedia.com/blog/2014/06/compressing-png-images-in-photoshop-with-javascript-and-tinypng)
+with JavaScript.
 
 ## License
 
