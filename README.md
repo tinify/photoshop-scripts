@@ -13,8 +13,11 @@ The scripts may be copied to the 'Presets/Scripts' folder in Adobe Photoshop.
 This is usually found in the following locations:
 
 ```
-Mac: /Applications/Adobe Photoshop (version)/Presets/Scripts/
-Windows: C:\Program Files\Adobe\Adobe Photoshop (version)\Presets\Scripts\
+Mac: 
+- /Applications/Adobe Photoshop (version)/Presets/Scripts/
+- ~/Library/Application Support/Adobe/Adobe Photoshop (version)/Presets/Scripts
+Windows:
+- C:\Program Files\Adobe\Adobe Photoshop (version)\Presets\Scripts\
 ```
 
 ## Usage
