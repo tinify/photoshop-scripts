@@ -6,8 +6,8 @@
 <javascriptresource>
 <menu>automate</menu>
 <category>compression</category>
-<name>$$$/TinifyFolderJPEG/Menu=Compress Folder with JPEG and PNG Images...</name>
-<eventid>B679042E-E418-4724-A313-5549AE8F2EC5</eventid>
+<name>$$$/TinifyFolderJPEGandPNG/Menu=Compress Folder with JPEG and PNG Images...</name>
+<eventid>55C8CE17-1F22-43F4-80A3-AB98A6B5A24B</eventid>
 </javascriptresource>
 
 */
