@@ -39,7 +39,13 @@ function compressJPEGFile(file, percentage) {
 
     // Compress the document
     var tinify = new ActionDescriptor();
-    tinify.putPath(charIDToTypeID("In  "), file); /* Overwrite original! */
+
+    if (File.fs == "Windows") {
+        tinify.putString(charIDToTypeID("Nm  "), File.encode(file.fsName)); /* Overwrite original! */
+    } else {
+        tinify.putPath(charIDToTypeID("In  "), file); /* Overwrite original! */
+    }
+
     tinify.putUnitDouble(charIDToTypeID("Scl "), charIDToTypeID("#Prc"), percentage);
     tinify.putEnumerated(charIDToTypeID("FlTy"), charIDToTypeID("tyFT"), charIDToTypeID("tyJP")); /* Force JPEG */
 
